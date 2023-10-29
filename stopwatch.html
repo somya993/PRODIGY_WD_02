@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>stopwatch using HTML, CSS, JavaScript</title>
+    <style>
+        body{
+            background: #dcf092;
+        }
+        .stopwatch{
+            width: 90%;
+            max-width: 1000px;
+            background-image: linear-gradient(rgba(0,0,0,0.8),rgba(0,0,0,0.8)), url(background.png) ;
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+            padding: 40px 0;
+            color: #fff;
+            margin: 200px auto 0;
+            height: 300px;
+            box-shadow: 0 10px 10px rgba(0,0,0,0.2)3!
+            
+        }
+        .stopwatch{
+            margin-top: 60px;
+            font-size: 44px;
+            font-weight: 300;
+
+        }
+        .buttons button{
+            margin: 0 10px;
+            font-size: 18px;
+            padding: 10px 20px;
+            border: none;
+            background-color: #3498db;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        
+        }
+        .buttons button:hover {
+            background-color: #2980b9;
+        }
+
+
+        #heading{
+            font-size: 70px;
+            display:block;
+            width: 650px;
+            text-align: center;
+            margin: auto;
+            padding: 30px;
+            text-decoration: underline;
+        }
+        
+        #lap-times {
+            margin-top: 100px;
+            text-align: left;
+            color:black;
+        
+        }
+
+
+    </style>
+</head>
+
+<body>
+    <h1 id="heading">STOPWATCH</h1>
+    <div class= "stopwatch">
+        
+        <h1 id="displayTime">00:00:00</h1>
+         <div class= "buttons">
+            <button id="start" onclick="watchstart()">Start</button>
+            <button id="pause" onclick="watchStop()">Pause</button>
+            <button id="reset" onclick="watchReset()">Reset</button>
+            <button id="lap" onclick="lap()">Lap</button>
+           
+         </div>
+         <ul id="lap-times"></ul>
+    </div>
+
+    <script>
+
+        let [seconds, minutes, hours] = [0,0,0];
+        let displayTime = document.getElementById("displayTime");
+        let timer=null;
+        function stopwatch(){
+            seconds++;
+            if(seconds == 60){
+                seconds = 0;
+                minutes++;
+                if(minutes == 60){
+                    minutes = 0;
+                    hours++;
+                }
+            }
+            let h = hours < 10 ? "0" + hours : hours;
+            let m = minutes < 10 ? "0" + minutes : minutes;
+            let s = seconds < 10 ? "0" + seconds : seconds;
+            displayTime.innerHTML = h+":"+ m +":"+ s;
+
+        }
+        function watchstart(){
+            if(timer!== null){
+                clearInterval(timer) ;
+            }
+            timer = setInterval(stopwatch, 1000) ;
+
+        }
+        function watchStop(){
+            clearInterval (timer) ;
+        }
+        function watchReset(){
+            clearInterval (timer) ;
+            [seconds, minutes, hours] = [0,0,0];
+            displayTime.innerHTML="00:00:00";
+
+            lapTimes = [];
+            lapIndex = 1;
+            const lapList = document.getElementById('lap-times');
+            lapList.innerHTML = '';
+            
+        }
+
+        let lapTimes = [];
+        let lapIndex = 1;
+
+        function lap() {
+            if (timer !== null) {
+                lapTimes.push(displayTime.innerHTML);
+                const lapList = document.getElementById('lap-times');
+                const lapItem = document.createElement('li');
+                lapItem.textContent = `Lap ${lapIndex}: ${displayTime.innerHTML}`;
+                lapList.appendChild(lapItem);
+                lapIndex++;
+            }
+        }
+
+
+        
+    </script>    
+    
+</body>
+</html>
